@@ -81,6 +81,7 @@ export default function ThreeDButton({
 
   // Safe dynamic lucide icon rendering
   const LucideIcon = (Icons as any)[iconName] || Icons.Link2;
+  const isTiktok = iconName.toLowerCase() === 'tiktok';
 
   // Render the modern 3D beveled button layout
   return (
@@ -126,10 +127,10 @@ export default function ThreeDButton({
 
       {/* Floating Foreground Layer */}
       <motion.div
-        className={`relative rounded-2xl transition-shadow duration-300 w-full overflow-hidden flex items-center justify-between p-4 sm:p-5 ${
+        className={`relative rounded-xl transition-shadow duration-300 w-full overflow-hidden flex items-center justify-center py-3.5 px-6 ${
           highlight 
-            ? 'bg-gradient-to-r from-neutral-900/90 via-black/85 to-neutral-900/90 border border-purple-500/20' 
-            : 'bg-gradient-to-b from-neutral-900/80 to-black/90 border border-white/[0.06]'
+            ? 'bg-gradient-to-r from-neutral-900/90 via-black/85 to-neutral-900/90 border border-cyan-500/30' 
+            : 'bg-zinc-900/80 hover:bg-zinc-850/90 border border-white/[0.06] hover:border-white/[0.12]'
         }`}
         style={{
           rotateX: smoothRotateX,
@@ -137,8 +138,8 @@ export default function ThreeDButton({
           transformStyle: 'preserve-3d',
           zIndex: 3,
           boxShadow: hovered 
-            ? 'inset 0 1px 1px rgba(255,255,255,0.1), 0 15px 25px -10px rgba(0,0,0,0.6)'
-            : 'inset 0 1px 1px rgba(255,255,255,0.03), 0 5px 15px -8px rgba(0,0,0,0.4)',
+            ? 'inset 0 1px 1px rgba(255,255,255,0.1), 0 12px 20px -8px rgba(0,0,0,0.7)'
+            : 'inset 0 1px 1px rgba(255,255,255,0.03), 0 4px 10px -6px rgba(0,0,0,0.5)',
         }}
       >
         {/* Tilting sheen reflective mask */}
@@ -147,51 +148,37 @@ export default function ThreeDButton({
           style={{ background: glossBg }}
         />
 
-        {/* Content Wrapper translating on depth axis */}
+        {/* Content Wrapper (Centered text & icon) */}
         <div 
-          className="flex items-start gap-4"
+          className="flex items-center justify-center gap-3 select-none"
           style={{ transform: 'translateZ(15px)' }}
         >
-          {/* Futuristic icon cell */}
-          <div 
-            className={`p-3 rounded-xl flex items-center justify-center relative transition-transform duration-300 ${
-              hovered ? 'scale-105' : 'scale-100'
-            } ${
-              highlight 
-                ? 'bg-purple-500/10 border border-purple-500/30 text-purple-400' 
-                : 'bg-white/[0.04] border border-white/[0.08] text-slate-300'
-            }`}
-          >
-            {/* Hologram backing icon glow */}
-            <div className={`absolute inset-0 rounded-xl blur-xs opacity-0 group-hover:opacity-40 transition-opacity ${
-              highlight ? 'bg-purple-500' : 'bg-white'
-            }`} />
-            <LucideIcon size={20} className="relative z-10" />
-          </div>
+          {/* Futuristic minimalist icon */}
+          {isTiktok ? (
+            <svg 
+              viewBox="0 0 24 24" 
+              className={`w-[18px] h-[18px] transition-transform duration-300 fill-current ${
+                hovered ? 'scale-110 text-cyan-400' : 'text-zinc-400 group-hover:text-neutral-200'
+              }`}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.63 4.17.95.96 2.27 1.5 3.63 1.58.01 1.23-.01 2.45-.01 3.68a8.81 8.81 0 0 1-5.18-1.74c-.03 2.95-.01 5.9-.03 8.85-.06 1.83-.75 3.62-2.02 4.93-1.6 1.68-4.04 2.54-6.38 2.23-2.3-.22-4.48-1.75-5.34-3.92a8.62 8.62 0 0 1 .42-6.95C4.4 10.5 6.74 9.15 9.18 9.35c.16.02.32.05.48.09v3.74c-.95-.29-2-.09-2.73.57a3.83 3.83 0 0 0-.6 4.74c.66 1.15 2.1 1.77 3.39 1.44a3.86 3.86 0 0 0 2.59-3.75c0-5.32-.01-10.64-.02-15.96.11-.08.21-.13.3zm0 0" />
+            </svg>
+          ) : (
+            <LucideIcon 
+              size={18} 
+              className={`transition-transform duration-300 ${
+                hovered ? 'scale-110 text-cyan-400' : 'text-zinc-400 group-hover:text-neutral-200'
+              }`} 
+            />
+          )}
 
-          {/* Texts */}
-          <div className="flex flex-col gap-0.5">
-            <h3 className={`text-sm sm:text-base font-display font-medium tracking-tight transition-colors ${
-              highlight ? 'text-purple-300 group-hover:text-purple-200' : 'text-slate-200 group-hover:text-white'
-            }`}>
-              {label}
-            </h3>
-            <p className="text-xs text-slate-400 font-sans tracking-normal leading-normal max-w-[280px] sm:max-w-[420px]">
-              {description}
-            </p>
-          </div>
-        </div>
-
-        {/* Cyber Arrow Indicator */}
-        <div 
-          className={`flex items-center justify-center w-7 h-7 rounded-lg border transition-all duration-300 ${
-            highlight
-              ? 'border-purple-500/20 text-purple-400 bg-purple-500/5 group-hover:translate-x-1 group-hover:border-purple-500/40 group-hover:bg-purple-500/10'
-              : 'border-white/[0.04] text-slate-400 bg-white/[0.02] group-hover:translate-x-1 group-hover:border-white/[0.12] group-hover:bg-white/[0.06] group-hover:text-white'
-          }`}
-          style={{ transform: 'translateZ(10px)' }}
-        >
-          <Icons.ArrowUpRight size={14} />
+          {/* Label centered */}
+          <span className={`text-[13px] sm:text-[14px] font-sans font-medium tracking-wide transition-colors ${
+            highlight ? 'text-cyan-300 group-hover:text-cyan-200' : 'text-neutral-200 group-hover:text-white'
+          }`}>
+            {label}
+          </span>
         </div>
       </motion.div>
     </motion.a>

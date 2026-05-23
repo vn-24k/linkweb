@@ -1,45 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Cpu, ShieldCheck, AlertCircle, Terminal, X } from 'lucide-react';
 import BackgroundEffects from './components/BackgroundEffects';
 import AvatarHologram from './components/AvatarHologram';
 import ThreeDButton from './components/ThreeDButton';
 import ShimmerButton from './components/ShimmerButton';
 import { AnimatedModal, AnimatedModalTrigger, AnimatedModalContent, AnimatedModalClose } from './components/AnimatedModal';
 
-// The 3 Base Cursors
+// The Base Fluid Simulation Render Engine (Primary Cursor)
 import FluidCursor from './components/FluidSimulationCursor';
-import TailedCursor from './components/TailedCursor';
-import SleekLineCursor from './components/SleekLineCursor';
+import SpringWaveCursor from './components/SpringWaveCursor';
+import ElasticSleekCursor from './components/ElasticSleekCursor';
+import RibbonTrailCursor from './components/RibbonTrailCursor';
 
-// The 7 New Ultra-premium Cursors
-import ConstellationCursor from './components/ConstellationCursor';
-import IgnisSparksCursor from './components/IgnisSparksCursor';
-import AsciiStreamCursor from './components/AsciiStreamCursor';
-import TargetingHudCursor from './components/TargetingHudCursor';
-import LavaBlobCursor from './components/LavaBlobCursor';
-import RibbonWaveCursor from './components/RibbonWaveCursor';
-import LaserMeshCursor from './components/LaserMeshCursor';
+import HabilidadeDigitalizadora from './components/HabilidadeDigitalizadora';
 
 import { PROFILE, SOCIAL_LINKS } from './data';
 import { cyberAudio } from './utils/audio';
 
+import { Cpu, ShieldCheck, AlertCircle, Terminal, X, Instagram, Github, Linkedin } from 'lucide-react';
+
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState<'neon' | 'deepspace' | 'terminal'>('neon');
+  const [cursorType, setCursorType] = useState<'fluid' | 'springwave' | 'sleek' | 'ribbon'>('fluid');
   
-  // 10 Custom cursor states
-  const [fluidCursorEnabled, setFluidCursorEnabled] = useState(true); // Default active on launch
-  const [tailedCursorEnabled, setTailedCursorEnabled] = useState(false);
-  const [sleekLineCursorEnabled, setSleekLineCursorEnabled] = useState(false);
-  
-  const [constellationCursorEnabled, setConstellationCursorEnabled] = useState(false);
-  const [ignisCursorEnabled, setIgnisCursorEnabled] = useState(false);
-  const [asciiCursorEnabled, setAsciiCursorEnabled] = useState(false);
-  const [targetingCursorEnabled, setTargetingCursorEnabled] = useState(false);
-  const [lavaBlobCursorEnabled, setLavaBlobCursorEnabled] = useState(false);
-  const [ribbonWaveCursorEnabled, setRibbonWaveCursorEnabled] = useState(false);
-  const [laserMeshCursorEnabled, setLaserMeshCursorEnabled] = useState(false);
+  // Custom fluid simulation parameters states
+  const [fluidRadius, setFluidRadius] = useState(0.25);
+  const [fluidCurl, setFluidCurl] = useState(5.5);
+  const [fluidDissipation, setFluidDissipation] = useState(3.0);
+  const [fluidShading, setFluidShading] = useState(true);
 
   // Background atmosphere configs
   const [enableTrail, setEnableTrail] = useState(false);
@@ -56,7 +45,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Global document-level keyboard event listeners for hotkeys
+  // Keyboard preset controller for the single Fluid Engine
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const activeEl = document.activeElement;
@@ -70,19 +59,32 @@ export default function App() {
 
       if (e.key === '1') {
         cyberAudio.playClick();
-        setFluidCursorEnabled(prev => !prev);
+        // Preset: Cosmic Trail
+        setFluidRadius(0.15);
+        setFluidCurl(3.0);
+        setFluidDissipation(3.5);
+        setFluidShading(true);
       } else if (e.key === '2') {
         cyberAudio.playClick();
-        setTailedCursorEnabled(prev => !prev);
+        // Preset: High Turbulence
+        setFluidRadius(0.35);
+        setFluidCurl(12.0);
+        setFluidDissipation(2.0);
+        setFluidShading(true);
       } else if (e.key === '3') {
         cyberAudio.playClick();
-        setSleekLineCursorEnabled(prev => !prev);
+        // Preset: Slick Jet
+        setFluidRadius(0.08);
+        setFluidCurl(1.0);
+        setFluidDissipation(6.0);
+        setFluidShading(false);
       } else if (e.key === '4') {
         cyberAudio.playClick();
-        setConstellationCursorEnabled(prev => !prev);
-      } else if (e.key === '5') {
-        cyberAudio.playClick();
-        setLaserMeshCursorEnabled(prev => !prev);
+        // Preset: Plasma Flare
+        setFluidRadius(0.45);
+        setFluidCurl(8.0);
+        setFluidDissipation(1.5);
+        setFluidShading(true);
       }
     };
 
@@ -130,17 +132,18 @@ export default function App() {
         enableParticles={enableParticles} 
       />
 
-      {/* 3. Real-time Cursor Composites Selection */}
-      {fluidCursorEnabled && <FluidCursor />}
-      {tailedCursorEnabled && <TailedCursor />}
-      {sleekLineCursorEnabled && <SleekLineCursor />}
-      {constellationCursorEnabled && <ConstellationCursor />}
-      {ignisCursorEnabled && <IgnisSparksCursor />}
-      {asciiCursorEnabled && <AsciiStreamCursor />}
-      {targetingCursorEnabled && <TargetingHudCursor />}
-      {lavaBlobCursorEnabled && <LavaBlobCursor />}
-      {ribbonWaveCursorEnabled && <RibbonWaveCursor />}
-      {laserMeshCursorEnabled && <LaserMeshCursor />}
+      {/* 3. Real-time Core Rendering Cursor */}
+      {cursorType === 'fluid' && (
+        <FluidCursor 
+          splatRadius={fluidRadius}
+          curl={fluidCurl}
+          densityDissipation={fluidDissipation}
+          shading={fluidShading}
+        />
+      )}
+      {cursorType === 'springwave' && <SpringWaveCursor />}
+      {cursorType === 'sleek' && <ElasticSleekCursor />}
+      {cursorType === 'ribbon' && <RibbonTrailCursor />}
 
       {/* 4. Elegant Cyber Telemetry Preloader */}
       <AnimatePresence>
@@ -155,23 +158,23 @@ export default function App() {
               {/* Spinning gyroscopes */}
               <div className="relative w-14 h-14">
                 <motion.div
-                  className="absolute inset-0 rounded-full border border-t-white border-r-transparent border-b-zinc-700 border-l-transparent"
+                   className="absolute inset-0 rounded-full border border-t-cyan-400 border-r-transparent border-b-zinc-800 border-l-transparent"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1.1, repeat: Infinity, ease: 'linear' }}
                 />
                 <motion.div
-                  className="absolute inset-2 rounded-full border border-dashed border-zinc-500/50"
+                  className="absolute inset-2 rounded-full border border-dashed border-zinc-700/50"
                   animate={{ rotate: -360 }}
                   transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                 />
               </div>
 
               <div className="flex flex-col gap-1 mt-4 animate-pulse">
-                <span className="text-xs font-semibold tracking-widest text-green-500 uppercase">
-                  VINÍCIUS SILVA // MULTI-CURSOR ENGINE
+                <span className="text-xs font-semibold tracking-widest text-[#06b6d4] uppercase">
+                  VINÍCIUS SILVA • VECTOR FLUID ENGINE
                 </span>
                 <span className="text-[9px] text-zinc-500 tracking-wider uppercase">
-                  Sincronizando 10 vetores de renderização
+                  Sincronizando ambiente de renderização fluida
                 </span>
               </div>
             </div>
@@ -195,23 +198,13 @@ export default function App() {
             statusText={PROFILE.statusText}
             statusType={PROFILE.status}
           />
-
-          <p className="mt-6 text-sm sm:text-base text-slate-300 font-sans tracking-normal leading-relaxed text-center max-w-[450px]">
-            {PROFILE.bio}
-          </p>
+          <HabilidadeDigitalizadora />
         </motion.header>
 
         {/* SECTION A: WEB-LINKS CENTRAL CHANNELS */}
-        <section className="w-full flex flex-col gap-5">
-          <div className="flex items-center gap-2 px-1">
-            <h2 className="text-xs font-mono font-medium tracking-widest text-slate-500 uppercase">
-              PORTAIS CONECTADOS // LINKS
-            </h2>
-            <div className="flex-grow h-px bg-white/[0.03]" />
-          </div>
-
+        <section className="w-full max-w-sm mx-auto">
           <motion.div 
-            className="flex flex-col gap-4 w-full"
+            className="flex flex-col gap-3.5 w-full"
             initial="hidden"
             animate="show"
             variants={{
@@ -246,95 +239,64 @@ export default function App() {
         <AnimatedModal>
           <AnimatedModalTrigger className="w-full flex justify-center">
             <ShimmerButton
-              shimmerColor="#22c55e"
+              shimmerColor="#06b6d4"
               background="#000000"
               shimmerDuration="2.5s"
               className="w-full max-w-sm text-xs font-mono tracking-wider select-none border border-zinc-900 bg-black py-2.5"
               onClick={() => cyberAudio.playClick()}
             >
               <div className="flex items-center gap-2">
-                <Terminal size={12} className="text-green-500 animate-pulse" />
-                <span>INICIAR TERMÔMETRO DE DIAGNÓSTICO</span>
+                <Terminal size={12} className="text-cyan-400 animate-pulse" />
+                <span>INICIAR CALIBRADOR DE FLUIDO</span>
               </div>
             </ShimmerButton>
           </AnimatedModalTrigger>
 
           <AnimatedModalContent>
-            <div className="flex flex-col gap-4 font-mono text-xs text-zinc-400 select-none">
+            <div className="flex flex-col gap-5 font-sans text-sm text-zinc-300 select-none p-2">
               <div className="flex items-center justify-between border-b border-zinc-900 pb-3">
                 <div className="flex items-center gap-2">
-                  <Terminal size={14} className="text-green-500 animate-pulse" />
-                  <span className="font-bold tracking-widest text-white uppercase">SYSTEM_DIAG_vn24k</span>
+                  <Terminal size={15} className="text-cyan-400 animate-pulse" />
                 </div>
                 <AnimatedModalClose className="p-1 hover:bg-zinc-900 rounded transition-colors cursor-pointer text-zinc-500 hover:text-white" onClick={() => cyberAudio.playClick()}>
-                  <X size={14} />
+                  <X size={15} />
                 </AnimatedModalClose>
               </div>
 
-              {/* Holographic Diagnostic Fields */}
-              <div className="space-y-3 py-2">
-                <div className="flex justify-between items-center border-b border-zinc-900 pb-1">
-                  <span className="text-zinc-600">NÚCLEO_IDENTIFICADOR:</span>
-                  <span className="text-zinc-200 font-semibold text-green-400">vn24k</span>
-                </div>
-                <div className="flex justify-between items-center border-b border-zinc-900 pb-1">
-                  <span className="text-zinc-600">LATÊNCIA_RELAÇÃO:</span>
-                  <span className="text-green-400 font-mono">{latencyMs} ms (ESTÁVEL)</span>
-                </div>
-                <div className="flex justify-between items-center border-b border-zinc-900 pb-1">
-                  <span className="text-zinc-600">COR_PREFERIDA:</span>
-                  <span className="text-zinc-100 font-bold">TOTAL_PRETO</span>
-                </div>
-                <div className="flex justify-between items-center border-b border-zinc-900 pb-1">
-                  <span className="text-zinc-600">PROCESSADOR_VETORES:</span>
-                  <span className="text-zinc-300">10 ALGORITMOS_ATIVOS</span>
-                </div>
-              </div>
-
-              {/* Interactive Cursor Modifiers Selection */}
-              <div className="border-t border-zinc-900 pt-3 mt-1 text-left">
-                <span className="text-[10px] text-zinc-600 tracking-wider font-bold block mb-2 uppercase text-left">ESTADOS DE CURSORES (ATIVAR / DESATIVAR):</span>
-                <div className="grid grid-cols-2 gap-2 max-h-[160px] overflow-y-auto pr-1">
+              {/* Selection of Active Interaction Vector (Cursor) */}
+              <div className="space-y-4 py-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
-                    { label: '🔋 FLUIDO RENDER', state: fluidCursorEnabled, set: setFluidCursorEnabled },
-                    { label: '💫 ESTRELA CAUDA', state: tailedCursorEnabled, set: setTailedCursorEnabled },
-                    { label: '⚡ SLEEK CLÁSSICO', state: sleekLineCursorEnabled, set: setSleekLineCursorEnabled },
-                    { label: '🌌 CONSTELAÇÃO', state: constellationCursorEnabled, set: setConstellationCursorEnabled },
-                    { label: '🔥 CHISPAS IGNIS', state: ignisCursorEnabled, set: setIgnisCursorEnabled },
-                    { label: '👾 MATRIZ ASCII', state: asciiCursorEnabled, set: setAsciiCursorEnabled },
-                    { label: '🎯 MIRA HUD TECH', state: targetingCursorEnabled, set: setTargetingCursorEnabled },
-                    { label: '🌋 LAVA BIOLUM', state: lavaBlobCursorEnabled, set: setLavaBlobCursorEnabled },
-                    { label: '🎗️ FITA ONDAS', state: ribbonWaveCursorEnabled, set: setRibbonWaveCursorEnabled },
-                    { label: '🧬 GRADE LASER', state: laserMeshCursorEnabled, set: setLaserMeshCursorEnabled },
-                  ].map((cur, i) => (
+                    { id: 'fluid', label: '💧 Fluido Vetorial', desc: 'Simulação física hidrodinâmica' },
+                    { id: 'springwave', label: '🌀 Ondas Holográficas', desc: 'Pontos elásticos em cascata' },
+                    { id: 'sleek', label: '⚡ Retículo Preciso', desc: 'Mira tecnológica auto-orientada' },
+                    { id: 'ribbon', label: '🎗️ Capas de Fita GL', desc: 'WebGL OGL Ribbon Trail fluido' },
+                  ].map((cur) => (
                     <button
-                      key={i}
+                      key={cur.id}
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         cyberAudio.playClick();
-                        cur.set(!cur.state);
+                        setCursorType(cur.id as any);
                       }}
-                      className={`flex items-center justify-between p-2 rounded border transition-all text-[10px] font-mono select-none text-left cursor-pointer ${
-                        cur.state 
-                        ? 'bg-zinc-950 border-green-500/50 text-green-400 font-semibold' 
-                        : 'bg-black border-zinc-900 text-zinc-600 hover:text-zinc-400 hover:border-zinc-800'
+                      className={`flex flex-col text-left p-3.5 rounded-xl border transition-all cursor-pointer ${
+                        cursorType === cur.id 
+                          ? 'bg-cyan-950/20 border-cyan-500 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.15)] font-medium' 
+                          : 'bg-black border-zinc-900 text-zinc-400 hover:text-zinc-200 hover:border-zinc-800'
                       }`}
                     >
-                      <span className="truncate">{cur.label}</span>
-                      <span className={`w-1.5 h-1.5 rounded-full ${cur.state ? 'bg-green-500 animate-pulse' : 'bg-zinc-800'}`} />
+                      <span className="text-[13.5px] font-semibold tracking-wide">{cur.label}</span>
+                      <span className="text-[11.5px] text-zinc-500 mt-1 leading-normal font-normal">{cur.desc}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-zinc-950 p-2 text-left rounded border border-zinc-900 text-[9px] leading-relaxed text-zinc-500 border-l-2 border-l-green-500">
-                <p>O sistema foi atualizado para o estado de cor preta máxima. Foram excluídos os elementos de HUD secundários e rastreios de coordenadas excedentes. Identificação redefinida com "vn24k". Ative/desative múltiplos cursores acima em tempo real.</p>
-              </div>
-
-              <div className="flex justify-end pt-1">
+              <div className="flex justify-end pt-3 border-t border-zinc-900">
                 <AnimatedModalClose onClick={() => { cyberAudio.playClick(); }}>
-                  <button className="px-3.5 py-1.5 text-[10px] font-semibold bg-zinc-900 hover:bg-zinc-850 text-slate-200 rounded transition-colors border border-zinc-800 hover:border-zinc-750">
-                    CONCLUIR DIAGNÓSTICO
+                  <button className="px-5 py-2 text-xs font-semibold bg-cyan-950/10 hover:bg-cyan-600/20 text-cyan-400 hover:text-cyan-300 rounded-lg transition-all border border-cyan-500/30 hover:border-cyan-400/50 cursor-pointer">
+                    CONFIRMAR SELEÇÃO
                   </button>
                 </AnimatedModalClose>
               </div>
@@ -342,11 +304,39 @@ export default function App() {
           </AnimatedModalContent>
         </AnimatedModal>
 
+        {/* SECTION C: CENTERED SOCIALS (REFERENCE PHOTO) */}
+        <div className="flex justify-center items-center gap-10 text-neutral-500 mt-2">
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            className="hover:text-cyan-400 hover:scale-110 transition-all duration-300"
+            onClick={() => cyberAudio.playClick()}
+          >
+            <Instagram size={22} />
+          </a>
+          <a
+            href="https://github.com/vn-24k"
+            target="_blank"
+            className="hover:text-cyan-400 hover:scale-110 transition-all duration-300"
+            onClick={() => cyberAudio.playClick()}
+          >
+            <Github size={22} />
+          </a>
+          <a
+            href="https://linkedin.com"
+            target="_blank"
+            className="hover:text-cyan-400 hover:scale-110 transition-all duration-300"
+            onClick={() => cyberAudio.playClick()}
+          >
+            <Linkedin size={22} />
+          </a>
+        </div>
+
         {/* SECTION D: TELEMETRY TECH FOOTER */}
-        <footer className="w-full flex justify-center border-t border-white/[0.05] pt-8 text-[10px] font-mono text-zinc-600 select-none">
+        <footer className="w-full flex justify-center border-t border-white/[0.05] pt-8 text-[10px] font-mono text-zinc-650 select-none">
           <div className="flex items-center gap-1.5 justify-center">
             <Cpu size={12} className="text-zinc-700 animate-pulse" />
-            <span>vn24k // SYSTEM MAXIMUM BLACK</span>
+            <span>vn24k // PORTFÓLIO INTERATIVO</span>
           </div>
         </footer>
 

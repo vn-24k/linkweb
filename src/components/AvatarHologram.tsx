@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ShieldCheck, Cpu } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
 
 interface AvatarHologramProps {
   name: string;
@@ -9,214 +8,125 @@ interface AvatarHologramProps {
   statusType: string;
 }
 
-function TypewriterSkills() {
-  const [index, setIndex] = useState(0);
-  const [subIndex, setSubIndex] = useState(0);
-  const [reverse, setReverse] = useState(false);
-  const [blink, setBlink] = useState(true);
-
-  const skills = [
-    'react 19',
-    'next.js',
-    'typescript',
-    'tailwind css',
-    'node.js',
-    'webgl & canvasCode',
-    'creative coding',
-    'ai integration',
-    'full-stack design'
-  ];
-
-  // Cursor blink
-  useEffect(() => {
-    const blinkInterval = setInterval(() => {
-      setBlink((prev) => !prev);
-    }, 500);
-    return () => clearInterval(blinkInterval);
-  }, []);
-
-  // Write and erase loop
-  useEffect(() => {
-    if (subIndex === skills[index].length + 1 && !reverse) {
-      const timeout = setTimeout(() => setReverse(true), 2000);
-      return () => clearTimeout(timeout);
-    }
-
-    if (subIndex === 0 && reverse) {
-      setReverse(false);
-      setIndex((prev) => (prev + 1) % skills.length);
-      return;
-    }
-
-    const timeout = setTimeout(() => {
-      setSubIndex((prev) => prev + (reverse ? -1 : 1));
-    }, reverse ? 50 : 100);
-
-    return () => clearTimeout(timeout);
-  }, [subIndex, reverse, index]);
-
-  return (
-    <span className="text-green-400 font-mono tracking-wide font-medium">
-      &lt;&gt; {skills[index].substring(0, subIndex)}
-      <span className={`${blink ? 'opacity-100' : 'opacity-0'} text-green-500`}>│</span>
-    </span>
-  );
-}
-
 export default function AvatarHologram({
   name,
   role,
   statusText,
   statusType
 }: AvatarHologramProps) {
-  const [calibrating, setCalibrating] = useState(false);
-  const [pulseCount, setPulseCount] = useState(0);
   const [imageError, setImageError] = useState(false);
-
-  const triggerCalibration = () => {
-    if (calibrating) return;
-    setCalibrating(true);
-    setPulseCount(prev => prev + 1);
-    setTimeout(() => {
-      setCalibrating(false);
-    }, 1500);
-  };
-
-  // High quality Unsplash model matching the stylish software developer selfie perfectly
-  const defaultOnlineAvatar = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=600";
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div className="flex flex-col items-center justify-center text-center">
+      
+      {/* Interactive Avatar Container with Glowing Aura */}
       <div 
-        className="relative cursor-pointer select-none group"
-        onClick={triggerCalibration}
+        className="relative select-none flex items-center justify-center p-8 mb-4 cursor-pointer group"
+        onMouseEnter={() => {
+          setIsHovered(true);
+        }}
+        onMouseLeave={() => {
+          setIsHovered(false);
+        }}
       >
-        {/* Outermost Cyber dashed ring - changed to subtle dark border to keep it pitch black */}
+        
+        {/* Background circular neon backdrop glow */}
+        <div className={`absolute w-[240px] h-[240px] rounded-full bg-cyan-500/10 blur-3xl transition-opacity duration-500 ${
+          isHovered ? 'opacity-100 scale-110' : 'opacity-70 scale-100'
+        }`} />
+        
+        {/* Double-layered outer soft glowing ring */}
+        <div className={`absolute w-[180px] h-[180px] rounded-full bg-cyan-500/5 blur-xl transition-all duration-500 ${
+          isHovered ? 'scale-115 opacity-80' : 'scale-100 opacity-40'
+        }`} />
+
+        {/* Outer slow-spinning high-tech HUD Ring */}
         <motion.div
-          className="absolute inset-[-15px] rounded-full border border-dashed border-zinc-900/40"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
+          className="absolute w-[190px] h-[190px] rounded-full border border-dashed border-cyan-400/20 pointer-events-none"
+          animate={{ rotate: isHovered ? 360 : 360 }}
+          transition={{ duration: isHovered ? 15 : 40, repeat: Infinity, ease: 'linear' }}
         />
 
-        {/* Inner solid glowing ring - made dark to keep it black */}
+        {/* Inner fast-spinning tech ring (rotating opposite direction) */}
         <motion.div
-          className="absolute inset-[-8px] rounded-full border border-zinc-900/30 transition-colors duration-500"
-          animate={{ rotate: -360 }}
-          transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+          className="absolute w-[174px] h-[174px] rounded-full border border-dotted border-cyan-500/30 pointer-events-none"
+          animate={{ rotate: isHovered ? -360 : -360 }}
+          transition={{ duration: isHovered ? 10 : 25, repeat: Infinity, ease: 'linear' }}
         />
 
-        {/* Atmospheric underlying glow removed for absolute pitch black requirement */}
+        {/* Holographic crosshair ticks at cardinal positions */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="absolute top-1 w-1.5 h-1.5 bg-cyan-500/40 rounded-full" />
+          <div className="absolute bottom-1 w-1.5 h-1.5 bg-cyan-500/40 rounded-full" />
+          <div className="absolute left-1 w-1.5 h-1.5 bg-cyan-500/40 rounded-full" />
+          <div className="absolute right-1 w-1.5 h-1.5 bg-cyan-500/40 rounded-full" />
+        </div>
 
-        {/* Avatar viewport circle - made absolute black with normal borders */}
+        {/* 3D Glassy Border for Avatar Picture */}
         <motion.div
-          className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border border-zinc-900 bg-black"
-          animate={{
-            y: [0, -4, 0],
+          className="relative w-40 h-40 rounded-full p-[3px] bg-gradient-to-tr from-cyan-400/80 via-transparent to-cyan-400/80 shadow-[0_0_50px_rgba(6,182,212,0.25)] flex items-center justify-center"
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ 
+            scale: isHovered ? 1.04 : 1, 
+            opacity: 1,
+            boxShadow: isHovered 
+              ? '0 0 65px rgba(6,182,212,0.45)' 
+              : '0 0 40px rgba(6,182,212,0.2)'
           }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          style={{
-            boxShadow: 'none',
-          }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Main dynamic image element loading photo with referral settings */}
-          {!imageError ? (
-            <img
-              src="/caetano.png" // Look for direct upload
-              onError={() => setImageError(true)}
-              alt="Vinícius Silva Profile Picture"
-              referrerPolicy="no-referrer"
-              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 select-none z-10 relative"
-            />
-          ) : (
-            // Fallback premium illustration frame built exactly like the user's high-tech developer setup
-            <div className="absolute inset-0 flex items-center justify-center scale-95 relative z-10 bg-black">
-              {/* Complex Vector Grid illustration representing Caetano's curly/combed hair with thin mustache and zip jacket portrait */}
-              <svg viewBox="0 0 100 100" className="w-[85%] h-[85%] text-slate-500 opacity-60">
-                <defs>
-                  <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#0a0a0c" />
-                    <stop offset="100%" stopColor="#000000" />
-                  </linearGradient>
-                  <linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#52525b" />
-                    <stop offset="100%" stopColor="#18181b" />
-                  </linearGradient>
-                  <linearGradient id="hairGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#18181b" />
-                    <stop offset="100%" stopColor="#000000" />
-                  </linearGradient>
-                </defs>
-                {/* Developer workstations monitors outlined in background */}
-                <rect x="5" y="45" width="22" height="15" rx="2" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="0.8" />
-                <rect x="73" y="45" width="22" height="15" rx="2" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="0.8" />
-                
-                {/* Torso - Cool high collar double zip jacket */}
-                <path d="M22,85 C22,66 32,58 50,58 C68,58 78,66 78,85" fill="url(#bodyGrad)" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-                
-                {/* Face & Head */}
-                <circle cx="50" cy="38" r="15" fill="url(#skinGrad)" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-                
-                {/* Hair - Combed-back side-part styled cut */}
-                <path d="M35,33 C35,21 44,19 50,19 C55,19 65,21 65,31 C65,34 60,32 50,32 C41,32 35,34 35,33 Z" fill="url(#hairGrad)" stroke="rgba(255,255,255,0.02)" strokeWidth="0.8" />
-                
-                {/* Thin neat mustache */}
-                <path d="M44,45 C47,43.5 49,44 50,44 C51,44 53,43.5 56,45 C53,45.5 51,45 50,45 C49,45 47,45.5 44,45 Z" fill="#000000" />
-
-                {/* Cyber Targeting crosshairs - made dark/subtle */}
-                <circle cx="50" cy="38" r="2.5" fill="none" stroke="#27272a" strokeWidth="0.5" />
-              </svg>
-            </div>
-          )}
-
-          {/* scanner sweep overlay removed for absolute black requirement */}
-
-          {/* Interactive Calibration Wave Ring removed */}
+          <div className="w-full h-full rounded-full overflow-hidden border-2 border-black bg-zinc-950 flex items-center justify-center relative z-10">
+            {!imageError ? (
+              <img
+                src="/caetano.png" // Exact photo asset sent by user
+                onError={() => setImageError(true)}
+                alt="Vinícius Silva Profile Picture"
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover object-center select-none group-hover:scale-105 transition-transform duration-700"
+              />
+            ) : (
+              // Stunning modern minimalist abstract tech silhouette as highly safe fallback
+              <div className="w-full h-full flex items-center justify-center bg-black">
+                <svg viewBox="0 0 100 100" className="w-[85%] h-[85%] text-cyan-400 opacity-60">
+                  <path d="M50,20 C38,20 30,28 30,40 C30,48 35,55 42,58 C25,62 18,72 18,85 L82,85 C82,72 75,62 58,58 C65,55 70,48 70,40 C70,28 62,20 50,20 Z" fill="currentColor" opacity="0.15" />
+                  <circle cx="50" cy="40" r="14" fill="none" stroke="currentColor" strokeWidth="2" />
+                  <path d="M22,82 C25,72 35,66 50,66 C65,66 75,72 78,82" fill="none" stroke="currentColor" strokeWidth="2" />
+                </svg>
+              </div>
+            )}
+          </div>
         </motion.div>
 
-        {/* Dynamic Telemetry tags */}
+        {/* Absolute-positioned pill capsule badge on the bottom-left */}
         <motion.div
-          className="absolute bottom-[-2px] right-[-10px] bg-black border border-white/5 text-[9px] font-mono text-slate-300 rounded-full px-2 py-0.5 shadow-lg flex items-center gap-1 z-30"
-          animate={{
-            y: [0, -3, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 1,
-          }}
+          className="absolute left-[-15px] bottom-[22px] sm:left-[-22px] z-30"
+          initial={{ x: -10, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.5 }}
         >
-          <span className="h-1 w-1 bg-green-500 rounded-full animate-pulse" />
-          <span>vn24k</span>
+          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/45 border border-cyan-400/40 shadow-[0_4px_24px_rgba(0,0,0,0.9)] backdrop-blur-md">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-80"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+            </span>
+            <span className="text-[10px] sm:text-[11px] font-sans font-bold tracking-wider text-cyan-400 uppercase select-none">
+              {statusText}
+            </span>
+          </div>
         </motion.div>
       </div>
 
-      {/* Title */}
-      <h1 className="mt-8 text-3xl sm:text-4xl text-white font-display font-semibold tracking-tight leading-none text-glow-subtle">
+      {/* Name representation */}
+      <h1 className="mt-4 text-3xl sm:text-4xl text-white font-sans font-semibold tracking-tight leading-none text-glow-subtle select-text">
         {name}
       </h1>
 
-      {/* Meta roles */}
-      <div className="mt-2 text-sm sm:text-base font-medium tracking-wide text-white inline-flex items-center gap-1.5 py-0.5">
-        <span>{role}</span>
-        <span className="w-1 h-1 rounded-full bg-zinc-600" />
-        <span className="text-slate-400 text-xs sm:text-sm font-mono lowercase tracking-normal flex items-center gap-1">
-          <ShieldCheck size={13} className="inline text-green-500 fill-green-500/10" /> verificado
-        </span>
+      {/* Role with tracked and spaced styling */}
+      <div className="mt-3.5 text-xs sm:text-sm font-sans font-medium tracking-[0.2em] text-neutral-400 uppercase select-text">
+        {role}
       </div>
 
-      {/* Pulse badge - typewriter container */}
-      <div className="mt-4 flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-950 border border-zinc-900 text-xs font-mono select-none">
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-        </span>
-        <TypewriterSkills />
-      </div>
     </div>
   );
 }

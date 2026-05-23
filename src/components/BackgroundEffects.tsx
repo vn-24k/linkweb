@@ -175,7 +175,13 @@ export default function BackgroundEffects({
 
   return (
     <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden bg-[#000000]">
-      {/* Dynamic ambient background layers removed for pitch black requirement */}
+      {/* Subtly glowing ambient teal/cyan background spotlight behind the avatar matching the reference perfectly */}
+      <div 
+        className="absolute inset-0 w-full h-full"
+        style={{
+          background: 'radial-gradient(ellipse 650px 500px at 50% 28%, rgba(6, 182, 212, 0.09) 0%, rgba(3, 7, 8, 0.5) 45%, rgba(0, 0, 0, 1) 100%)',
+        }}
+      />
 
       {/* Cyber geometric tech grids */}
       {enableGrid && (
