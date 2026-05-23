@@ -38,7 +38,7 @@ export default function App() {
   const [enableParticles, setEnableParticles] = useState(false);
   const [latencyMs, setLatencyMs] = useState(3);
 
-  // Smooth system entrance loader with ultra-fast cyber/neon telemetry progression
+  // Smooth system entrance loader with instant high-velocity cyber telemetry progression
   useEffect(() => {
     const texts = [
       "AUTENTICANDO CRIPTOGRAFIA DE ACESSO...",
@@ -47,15 +47,15 @@ export default function App() {
 
     const interval = setInterval(() => {
       setProgress((prev) => {
-        // High-velocity loading steps (8% to 17% per tick)
-        const step = Math.max(5, Math.floor(Math.random() * 10) + 8);
+        // High-velocity loading steps (20% to 35% per tick for near-instant boot)
+        const step = Math.max(15, Math.floor(Math.random() * 20) + 15);
         const nextProgress = Math.min(100, prev + step);
 
         if (nextProgress >= 100) {
           clearInterval(interval);
           setTimeout(() => {
             setLoading(false);
-          }, 200); // Snappy finish transition
+          }, 80); // Ultra-snappy entrance transition
           return 100;
         }
 
@@ -67,7 +67,7 @@ export default function App() {
 
         return nextProgress;
       });
-    }, 25); // Blazing fast tick interval (25ms)
+    }, 15); // Blazing fast tick interval (15ms)
 
     return () => clearInterval(interval);
   }, []);
