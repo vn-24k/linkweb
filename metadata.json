@@ -1,0 +1,6 @@
+{
+  "name": "Personal Weblinks",
+  "description": "Um portal de links pessoal super futurista com estética cyberpunk elegante, efeitos de cursor fluidos, efeitos holográficos e botões 3D interativos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
