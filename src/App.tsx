@@ -21,6 +21,8 @@ import { Cpu, ShieldCheck, AlertCircle, Terminal, X, Instagram, Github, Linkedin
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [loadingText, setLoadingText] = useState("CONECTANDO AO DIRETÓRIO SEGURO...");
   const [theme, setTheme] = useState<'neon' | 'deepspace' | 'terminal'>('neon');
   const [cursorType, setCursorType] = useState<'fluid' | 'springwave' | 'sleek' | 'ribbon'>('fluid');
   
@@ -36,13 +38,38 @@ export default function App() {
   const [enableParticles, setEnableParticles] = useState(false);
   const [latencyMs, setLatencyMs] = useState(3);
 
-  // Smooth system entrance loader
+  // Smooth system entrance loader with ultra-fast cyber/neon telemetry progression
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1100);
+    const texts = [
+      "AUTENTICANDO CRIPTOGRAFIA DE ACESSO...",
+      "CARREGANDO PORTFÓLIO E PRESETS DE VN-24K..."
+    ];
 
-    return () => clearTimeout(timer);
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        // High-velocity loading steps (8% to 17% per tick)
+        const step = Math.max(5, Math.floor(Math.random() * 10) + 8);
+        const nextProgress = Math.min(100, prev + step);
+
+        if (nextProgress >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            setLoading(false);
+          }, 200); // Snappy finish transition
+          return 100;
+        }
+
+        const textIdx = Math.min(
+          Math.floor((nextProgress / 100) * texts.length),
+          texts.length - 1
+        );
+        setLoadingText(texts[textIdx]);
+
+        return nextProgress;
+      });
+    }, 25); // Blazing fast tick interval (25ms)
+
+    return () => clearInterval(interval);
   }, []);
 
   // Keyboard preset controller for the single Fluid Engine
@@ -145,38 +172,166 @@ export default function App() {
       {cursorType === 'sleek' && <ElasticSleekCursor />}
       {cursorType === 'ribbon' && <RibbonTrailCursor />}
 
-      {/* 4. Elegant Cyber Telemetry Preloader */}
+      {/* 4. Highly Advanced Cyber Neon Preloader (VN-24K) */}
       <AnimatePresence>
         {loading && (
           <motion.div
             key="preloader"
-            className="fixed inset-0 bg-[#07080a] z-55 flex flex-col items-center justify-center font-mono select-none"
-            exit={{ opacity: 0, scale: 1.05 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 bg-[#06070a] z-55 flex flex-col items-center justify-center font-mono select-none overflow-hidden"
+            exit={{ opacity: 0, scale: 1.03, filter: "blur(8px)" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="flex flex-col items-center gap-4 text-center p-6">
-              {/* Spinning gyroscopes */}
-              <div className="relative w-14 h-14">
-                <motion.div
-                   className="absolute inset-0 rounded-full border border-t-cyan-400 border-r-transparent border-b-zinc-800 border-l-transparent"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1.1, repeat: Infinity, ease: 'linear' }}
-                />
-                <motion.div
-                  className="absolute inset-2 rounded-full border border-dashed border-zinc-700/50"
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                />
+            {/* Ambient cyber grid background specifically for the loader */}
+            <div className="absolute inset-0 interactive-grid opacity-15" />
+            <div className="absolute inset-0 bg-radial-gradient from-cyan-950/20 via-transparent to-transparent pointer-events-none" />
+
+            <div className="flex flex-col items-center gap-8 text-center p-6 max-w-sm relative z-10">
+              
+              {/* Central Premium SVG Cyber Neon Logo */}
+              <div className="relative flex items-center justify-center p-2">
+                {/* Outer rotating neon shadow backup rings */}
+                <div className="absolute inset-0 w-44 h-44 rounded-full border border-cyan-500/10 blur-[8px] animate-pulse" />
+                
+                <svg viewBox="0 0 200 200" className="w-40 h-40 filter drop-shadow-[0_0_12px_rgba(6,182,212,0.35)]">
+                  {/* Glowing Filter Definitions */}
+                  <defs>
+                    <filter id="neon-glow-cyan" x="-30%" y="-30%" width="160%" height="160%">
+                      <feGaussianBlur stdDeviation="5" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                    <filter id="neon-glow-purple" x="-30%" y="-30%" width="160%" height="160%">
+                      <feGaussianBlur stdDeviation="5" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
+
+                  {/* Concentric Circle 1 - Neon Cyan (Clockwise) */}
+                  <motion.circle
+                    cx="100"
+                    cy="100"
+                    r="85"
+                    stroke="#06b6d4"
+                    strokeWidth="3"
+                    fill="none"
+                    strokeDasharray="360 120"
+                    filter="url(#neon-glow-cyan)"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+                  />
+
+                  {/* Concentric Circle 2 - Neon Purple (Counter-Clockwise) */}
+                  <motion.circle
+                    cx="100"
+                    cy="100"
+                    r="75"
+                    stroke="#a855f7"
+                    strokeWidth="1.5"
+                    fill="none"
+                    strokeDasharray="120 200"
+                    filter="url(#neon-glow-purple)"
+                    animate={{ rotate: -360 }}
+                    transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                  />
+
+                  {/* High Tech Inner Hexagon Layer */}
+                  <motion.polygon
+                    points="100,38 153,68 153,132 100,162 47,132 47,68"
+                    stroke="#06b6d4"
+                    strokeWidth="1"
+                    className="opacity-20"
+                    fill="none"
+                    animate={{ scale: [0.98, 1.02, 0.98] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  />
+
+                  {/* Initials VN Cyber Typography Path */}
+                  <g>
+                    {/* Glowing Letter 'V' */}
+                    <path
+                      d="M 55,75 L 82,125 L 98,95"
+                      fill="none"
+                      stroke="#06b6d4"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      filter="url(#neon-glow-cyan)"
+                    />
+                    {/* Glowing Letter 'N' */}
+                    <path
+                      d="M 104,121 L 104,75 L 138,121 L 138,75"
+                      fill="none"
+                      stroke="#a855f7"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      filter="url(#neon-glow-purple)"
+                    />
+                    
+                    {/* Active Pulsing Core Node */}
+                    <motion.circle
+                      cx="145"
+                      cy="75"
+                      r="4"
+                      fill="#eab308"
+                      animate={{ scale: [1, 1.8, 1], opacity: [0.7, 1, 0.7] }}
+                      transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                      filter="drop-shadow(0 0 5px #eab308)"
+                    />
+                  </g>
+
+                  {/* Brand Subtitle Badge */}
+                  <text
+                    x="100"
+                    y="152"
+                    fill="white"
+                    fontSize="9.5"
+                    fontFamily="'Space Grotesk', sans-serif"
+                    fontWeight="800"
+                    letterSpacing="5"
+                    textAnchor="middle"
+                    className="tracking-widest opacity-90 fill-white text-shadow-[0_0_8px_rgba(255,255,255,0.6)]"
+                  >
+                    VN-24K • DEV
+                  </text>
+                </svg>
               </div>
 
-              <div className="flex flex-col gap-1 mt-4 animate-pulse">
-                <span className="text-xs font-semibold tracking-widest text-[#06b6d4] uppercase">
-                  VINÍCIUS SILVA • VECTOR FLUID ENGINE
-                </span>
-                <span className="text-[9px] text-zinc-500 tracking-wider uppercase">
-                  Sincronizando ambiente de renderização fluida
-                </span>
+              {/* Loader telemetry readout and progression stats */}
+              <div className="flex flex-col items-center gap-3.5 w-full mt-2">
+                
+                {/* Dynamic numerical counter inside tech braces */}
+                <div className="flex items-center gap-2 text-xs font-mono font-bold tracking-wider text-cyan-400">
+                  <span>[</span>
+                  <span className="w-10 text-center text-glow-cyber text-sm tracking-wide">
+                    {progress.toString().padStart(3, '0')}%
+                  </span>
+                  <span>]</span>
+                </div>
+
+                {/* Styled modern loading progress bar with glowing cyan matrix effect */}
+                <div className="w-56 h-1 bg-zinc-950 rounded-full border border-zinc-900 overflow-hidden relative shadow-[0_0_8px_rgba(6,182,212,0.1)]">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"
+                    initial={{ width: '0%' }}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ ease: "easeOut" }}
+                  />
+                </div>
+
+                {/* Detailed real-time loading text log with blinking prompt cursor */}
+                <div className="flex items-center justify-center gap-1.5 h-5 text-[10px] text-zinc-400 tracking-wider">
+                  <span className="animate-pulse text-[#06b6d4] font-bold">▶</span>
+                  <span className="uppercase font-medium min-w-[200px] text-center">{loadingText}</span>
+                </div>
+
               </div>
+
             </div>
           </motion.div>
         )}
@@ -197,6 +352,7 @@ export default function App() {
             role={PROFILE.role}
             statusText={PROFILE.statusText}
             statusType={PROFILE.status}
+            avatarUrl={PROFILE.avatarUrl}
           />
           <HabilidadeDigitalizadora />
         </motion.header>
@@ -247,7 +403,7 @@ export default function App() {
             >
               <div className="flex items-center gap-2">
                 <Terminal size={12} className="text-cyan-400 animate-pulse" />
-                <span>INICIAR CALIBRADOR DE FLUIDO</span>
+                <span>⚡ ESCOLHER INTERAÇÃO ( CLIQUE AQUI )</span>
               </div>
             </ShimmerButton>
           </AnimatedModalTrigger>
@@ -256,7 +412,8 @@ export default function App() {
             <div className="flex flex-col gap-5 font-sans text-sm text-zinc-300 select-none p-2">
               <div className="flex items-center justify-between border-b border-zinc-900 pb-3">
                 <div className="flex items-center gap-2">
-                  <Terminal size={15} className="text-cyan-400 animate-pulse" />
+                  <Terminal size={15} className="text-[#a855f7] animate-pulse" />
+                  <span className="text-xs font-mono font-bold tracking-widest text-[#a855f7] uppercase">👇 CENTRAL INTERATIVO</span>
                 </div>
                 <AnimatedModalClose className="p-1 hover:bg-zinc-900 rounded transition-colors cursor-pointer text-zinc-500 hover:text-white" onClick={() => cyberAudio.playClick()}>
                   <X size={15} />

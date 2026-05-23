@@ -16,6 +16,7 @@ export interface ProfileData {
   status: 'active' | 'learning' | 'building' | 'available';
   statusText: string;
   avatarPlaceholderSeed: string;
+  avatarUrl?: string;
 }
 
 export interface ProjectCard {

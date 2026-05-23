@@ -2,12 +2,13 @@ import { ProfileData, SocialLink, ProjectCard } from './types';
 
 export const PROFILE: ProfileData = {
   name: "Vinícius Silva",
-  role: "AI STRATEGIST • DIGITAL BRANDING",
+  role: "CREATIVE DEVELOPER • FULL-STACK ENGINEER",
   bio: "",
   location: "Brasil",
   status: "available",
   statusText: "DISPONÍVEL PARA PROJETOS",
   avatarPlaceholderSeed: "cyan-aura",
+  avatarUrl: "https://github.com/vn-24k.png",
 };
 
 export const SOCIAL_LINKS: SocialLink[] = [

@@ -6,16 +6,38 @@ interface AvatarHologramProps {
   role: string;
   statusText: string;
   statusType: string;
+  avatarUrl?: string;
 }
 
 export default function AvatarHologram({
   name,
   role,
   statusText,
-  statusType
+  statusType,
+  avatarUrl
 }: AvatarHologramProps) {
-  const [imageError, setImageError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  // Dynamic fallback priority list for avatar images:
+  // 1. Custom profile-defined avatar URL
+  // 2. Custom local/public path asset fallback
+  // 3. Safe live GitHub profile avatar redirect
+  const avatarSources = [
+    avatarUrl,
+    "/caetano.png",
+    "https://github.com/vn-24k.png",
+  ].filter(Boolean) as string[];
+
+  const [srcIndex, setSrcIndex] = useState(0);
+  const [hasFailedAll, setHasFailedAll] = useState(false);
+
+  const handleImageError = () => {
+    if (srcIndex < avatarSources.length - 1) {
+      setSrcIndex(srcIndex + 1);
+    } else {
+      setHasFailedAll(true);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center text-center">
@@ -77,11 +99,11 @@ export default function AvatarHologram({
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="w-full h-full rounded-full overflow-hidden border-2 border-black bg-zinc-950 flex items-center justify-center relative z-10">
-            {!imageError ? (
+            {!hasFailedAll && avatarSources.length > 0 ? (
               <img
-                src="/caetano.png" // Exact photo asset sent by user
-                onError={() => setImageError(true)}
-                alt="Vinícius Silva Profile Picture"
+                src={avatarSources[srcIndex]}
+                onError={handleImageError}
+                alt={`${name} Profile Picture`}
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover object-center select-none group-hover:scale-105 transition-transform duration-700"
               />
